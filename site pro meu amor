@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casal Romântico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            color: #ff69b4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            padding: 2rem 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .counter {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #ff69b4;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .falling {
+            position: fixed;
+            top: -100px;
+            animation: fall linear forwards;
+            z-index: -1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(calc(100vh + 100px));
+            }
+        }
+
+        audio {
+            display: none;
+        }
+
+        .play-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section id="counter">
+            <h1>Tempo de Amor</h1>
+            <p class="counter" id="time-counter">Carregando...</p>
+        </section>
+
+        <section id="gallery">
+            <h2>Galeria de Amor</h2>
+            <div class="gallery">
+                <!-- Fotos -->
+                <img src="foto1.jpeg" alt="Foto 1">
+                <img src="foto2.jpeg" alt="Foto 2">
+                <img src="foto3.jpeg" alt="Foto 3">
+                <img src="foto4.jpeg" alt="Foto 4">
+                <img src="foto5.jpeg" alt="Foto 5">
+                <img src="foto6.jpeg" alt="Foto 6">
+                <img src="foto7.jpeg" alt="Foto 7">
+            </div>
+        </section>
+
+        <section id="message">
+            <h2>Para o amor da minha vida</h2>
+            <div class="message">
+                <p>Parece que foi ontem que o nosso mundo se cruzou naquele dia 22 de setembro de 2022. Olha para nós hoje, vida... já estamos caminhando para quase 4 anos de uma história linda que construímos lado a lado. Cada segundo com você é um presente que eu agradeço todos os dias.</p>
+                <p>Você é a minha princesa, a pessoa que transforma os meus dias comuns em momentos mágicos. O seu sorriso é o meu porto seguro, o seu abraço é o lugar onde eu sempre quero morar. Dividir a rotina, os sonhos e o crescimento com você tem sido a jornada mais incrível da minha existência.</p>
+                <p>Obrigado por ser exatamente quem você é, por me apoiar e por me amar com tanta intensidade. Saiba que o meu amor por você só cresce a cada novo amanhecer. Você é e sempre será a Minha aninha, o meu grande amor e o meu futuro. Te amo daqui até a eternidade!</p>
+            </div>
+        </section>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+    <button class="play-btn" onclick="toggleMusic()">🔊</button>
+
+    <script>
+        // Contador de tempo
+        const start = new Date('2022-09-22T00:00:00');
+        const counterElement = document.getElementById('time-counter');
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - start;
+
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            counterElement.textContent = `${years} anos, ${months} meses, ${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+        }
+
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // Animação ao rolar
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.75) {
+                    section.style.animation = 'fadeIn 1s ease-in-out';
+                }
+            });
+        });
+
+        // Efeito de pétalas
+        function createPetals() {
+            for (let i = 0; i < 30; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'falling';
+                petal.style.left = `${Math.random() * 100}%`;
+                petal.style.width = `${Math.random() * 30 + 10}px`;
+                petal.style.height = petal.style.width;
+                petal.style.background = `url('coracao.png') no-repeat center`;
+                petal.style.backgroundSize = 'contain';
+                petal.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                document.body.appendChild(petal);
+            }
+        }
+
+        createPetals();
+
+        // Música
+        const bgMusic = document.getElementById('bg-music');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+            } else {
+                bgMusic.play();
+                isPlaying = true;
+            }
+        }
+    </script>
+</body>
+</html>
